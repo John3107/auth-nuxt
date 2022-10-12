@@ -20,6 +20,14 @@
         </div>
       </div>
     </header>
+    <main class="main">
+      <input-base type="email" label="Email" @value="email = $event"/>
+      <input-base type="password" label="Пароль" @value="password = $event"/>
+      <div class="checkbox">
+        <input type="checkbox" class="input-check"/>
+        <label>Чужой компьютер</label>
+      </div>
+    </main>
     <div v-if="isShowContext" class="close-context-menu" @click="isShowContext = false"></div>
   </form>
 </template>
@@ -27,13 +35,20 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import InputBase from "~/components/input/InputBase.vue";
 
-@Component
+@Component({
+  components: {
+    InputBase
+  }
+})
 export default class Auth extends Vue {
 
   isShowContext = false
   languages = ['РУС', 'УКР']
   selectedLanguage = 'УКР'
+  email = ''
+  password = ''
 
   onSelectLanguage(item: string) {
     this.selectedLanguage = item
@@ -55,6 +70,7 @@ export default class Auth extends Vue {
   border-radius: 16px;
   gap: 16px;
   font-size: 14px;
+  box-sizing: border-box;
 
   .header {
     display: flex;
@@ -129,6 +145,35 @@ export default class Auth extends Vue {
 
       .language-hovered {
         background: $rose-light;
+      }
+    }
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+
+    .checkbox {
+      display: inherit;
+      align-items: center;
+      font-size: 12px;
+      color: $black-base;
+
+      label {
+        font-size: 16px;
+      }
+
+      .input-check {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+
+        input[type=checkbox]:checked {
+          border: $orange-base;
+          background: $orange-base;
+        }
       }
     }
   }
