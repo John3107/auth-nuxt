@@ -6,7 +6,7 @@
            :class="{'select-active': isShowContext}"
            @click="isShowContext = !isShowContext">
         <div class="option">{{ selectedLanguage }}</div>
-        <img :src="require('../static/icons/arrow-left.svg')"
+        <img :src="require('static/icons/arrow-left.svg')"
              alt=""
              :class="!isShowContext && 'arrow-down'"/>
       </div>
@@ -23,11 +23,16 @@
     <main class="main">
       <input-base type="email" label="Email" @value="email = $event"/>
       <input-base type="password" label="Пароль" @value="password = $event"/>
-      <div class="checkbox">
-        <input type="checkbox" class="input-check"/>
-        <label>Чужой компьютер</label>
-      </div>
+      <label>
+        <input type="checkbox" name="checkbox" value="css" checked/>
+        <span>Чужой компьютер</span>
+      </label>
     </main>
+    <footer class="footer">
+      <button class="button" type="submit">Вхід</button>
+      <a href="" class="link">Подати заявку на реєстрацію</a>
+      <a href="" class="link">Забули пароль?</a>
+    </footer>
     <div v-if="isShowContext" class="close-context-menu" @click="isShowContext = false"></div>
   </form>
 </template>
@@ -58,7 +63,7 @@ export default class Auth extends Vue {
 </script>
 
 <style lang="scss">
-@import '~static/scss/colors.scss';
+@import '@/static/scss/colors.scss';
 
 .auth {
   display: flex;
@@ -155,26 +160,71 @@ export default class Auth extends Vue {
     justify-content: space-between;
     gap: 8px;
 
-    .checkbox {
-      display: inherit;
-      align-items: center;
-      font-size: 12px;
-      color: $black-base;
+    label > input[type="checkbox"] {
+      display: none;
+    }
 
-      label {
-        font-size: 16px;
+    label > input[type="checkbox"] + *::before {
+      content: "";
+      display: inline-block;
+      vertical-align: bottom;
+      width: 1rem;
+      height: 1rem;
+      margin-right: 0.3rem;
+      border-radius: 10%;
+      border-style: solid;
+      border-width: 0.1rem;
+      border-color: $orange-base;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    label > input[type="checkbox"]:checked + *::before {
+      content: "✔";
+      color: white;
+      text-align: center;
+      background: $orange-base;
+      border-color: $orange-base;
+      cursor: pointer;
+    }
+
+    label span {
+      font-size: 16px;
+      color: $black-base
+    }
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .button {
+      width: 100%;
+      padding: 8px 12px;
+      background: $orange-base;
+      border-radius: 16px;
+      outline: 0;
+      border: none;
+      color: #FFF;
+      font-size: 16px;
+      line-height: 20px;
+      font-weight: 400;
+      cursor: pointer;
+
+      &:hover {
+        background: $orange-dark;
       }
+    }
 
-      .input-check {
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-
-        input[type=checkbox]:checked {
-          border: $orange-base;
-          background: $orange-base;
-        }
-      }
+    .link {
+      color: $orange-base;
+      font-size: 16px;
+      line-height: 20px;
+      font-weight: 400;
+      text-decoration: underline;
+      text-align: center;
+      cursor: pointer;
     }
   }
 
