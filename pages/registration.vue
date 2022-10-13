@@ -1,5 +1,5 @@
 <template>
-  <div class="registration">aaa</div>
+  <form class="registration">aaa</form>
 </template>
 
 <script lang="ts">
@@ -14,6 +14,15 @@ export default class Registration extends Vue {
 
 <style lang="scss">
 .registration {
-
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+  background: #FFF;
+  width: 100%;
+  max-width: 799px;
+  border-radius: 16px;
+  gap: 16px;
+  font-size: 14px;
+  box-sizing: border-box;
 }
 </style>
