@@ -1,20 +1,20 @@
 <template>
   <div class="input-base">
-    <label>{{ label }}</label>
+    <label>{{ label }}<span v-if="!isntRequire" class="require"> *</span></label>
     <input :type="currentType" v-model="inputData"/>
-    <div class="icon" v-if="label === 'Email'">
+    <div class="icon" v-if="type !== 'password'">
       <img v-if="inputData"
-           :src="require('../../static/icons/clear.svg')"
+           :src="require('@/static/icons/clear.svg')"
            alt=""
            @click="inputData = ''">
     </div>
-    <div class="icon" v-if="label === 'Пароль'">
+    <div class="icon" v-else>
       <img v-if="!isShowPassword"
-           :src="require('../../static/icons/eye.svg')"
+           :src="require('@/static/icons/eye.svg')"
            alt=""
            @click="passwordSwitcher">
       <img v-else
-           :src="require('../../static/icons/eye-off.svg')"
+           :src="require('@/static/icons/eye-off.svg')"
            alt=""
            @click="passwordSwitcher">
     </div>
@@ -26,7 +26,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
-  props: ['label', 'type'],
+  props: ['label', 'type', 'isntRequire'],
   watch: {
     inputData(data) {
       this.$emit('value', data)
@@ -35,7 +35,7 @@ import Component from 'vue-class-component'
 })
 
 export default class InputBase extends Vue {
-  inputData = ''
+  inputData = this.$props.type === 'phone' ? '+380' : ''
   isShowPassword = false
   currentType = this.$props.type
 
@@ -61,7 +61,7 @@ export default class InputBase extends Vue {
     font-size: 12px;
     color: $black-base;
 
-    &:after {
+    .require {
       content: " *";
       color: $red-base;
     }
@@ -70,7 +70,7 @@ export default class InputBase extends Vue {
   input {
     padding: 12px 16px;
     border-radius: 8px;
-    border: 1px solid $grey-base;
+    border: 1px solid $grey-light;
     outline: 0;
     font-size: 18px;
 
@@ -81,9 +81,9 @@ export default class InputBase extends Vue {
 
   .icon {
     position: absolute;
-    top: 33px;
-    right: 12px;
-    color: #7a7e80;
+    top: 38px;
+    right: 16px;
+    color: $grey-extra-dark;
     cursor: pointer;
 
     img {

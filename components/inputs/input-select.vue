@@ -1,25 +1,25 @@
 <template>
 <!--  <div>-->
-    <header class="header">
-      <h1 class="title">{{ title }}</h1>
+    <div class="input-select">
+      <label>{{ label }}</label>
       <div class="select"
            :class="{'select-active': isShowContext}"
            @click="isShowContext = !isShowContext">
-        <div class="option">{{ selectedLanguage }}</div>
+        <input v-model="selectedValue"/>
         <img :src="require('static/icons/arrow-left.svg')"
              alt=""
              :class="!isShowContext && 'arrow-down'"/>
       </div>
       <div class="context-menu" v-if="isShowContext">
-        <div class="language"
-             :class="{'language-hovered': language === selectedLanguage}"
-             :style="{borderRadius: language === 'УКР' && '0 0 8px 8px'}"
-             v-for="language in languages"
-             :key="language"
-             @click="onSelectLanguage(language)">{{ language }}
+        <div class="selected-value"
+             :class="{'value-hovered': item === selectedValue}"
+             :style="{borderRadius: item === data[data.length - 1] && '0 0 8px 8px'}"
+             v-for="item in data"
+             :key="item"
+             @click="onSelectValue(item)">{{ item }}
         </div>
       </div>
-    </header>
+    </div>
 <!--    <div v-if="isShowContext" class="close-context-menu" @click="isShowContext = false"></div>-->
 <!--  </div>-->
 </template>
@@ -29,17 +29,16 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
-  name: 'FormHeader',
-  props: ['title'],
+  name: 'InputSelect',
+  props: ['label', 'data']
 })
-export default class FormHeader extends Vue {
+export default class InputSelect extends Vue {
 
   isShowContext = false
-  languages = ['РУС', 'УКР']
-  selectedLanguage = 'УКР'
+  selectedValue = ''
 
-  onSelectLanguage(item: string) {
-    this.selectedLanguage = item
+  onSelectValue(item: string) {
+    this.selectedValue = item
     this.isShowContext = !this.isShowContext
   }
 }
@@ -48,36 +47,41 @@ export default class FormHeader extends Vue {
 <style lang="scss">
 @import '@/static/scss/colors.scss';
 
-.header {
-  display: flex;
+.input-select {
+  display: inherit;
+  flex-direction: inherit;
   justify-content: space-between;
-  align-items: center;
   position: relative;
+  box-sizing: border-box;
 
-  .title {
-    font-size: 18px;
-    line-height: 24px;
-    font-weight: 700;
+  label {
+    font-size: 12px;
     color: $black-base;
-    margin: 0;
+
+    &:after {
+      content: " *";
+      color: $red-base;
+    }
   }
 
   .select {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: $grey-light 1px solid;
-    padding: 3px 16px;
+    border: $grey-base 1px solid;
+    padding: 10px 10px 10px 16px;
     border-radius: 8px;
-    cursor: pointer;
+    margin-top: 4px;
 
-    .option {
-      width: 27px;
+    input {
       color: $black-base;
-      font-size: 14px;
+      font-size: 16px;
       line-height: 16px;
-      font-weight: 700;
+      font-weight: 500;
       margin-right: 2px;
+      width: 100%;
+      border: none;
+      outline: 0;
     }
 
     .arrow-down {
@@ -97,20 +101,24 @@ export default class FormHeader extends Vue {
 
   .context-menu {
     position: absolute;
-    top: 31px;
-    right: 0;
+    top: 62px;
+    left: 0;
+    width: 100%;
+    max-height: 160px;
     background: #FFF;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     border: 1px solid $black-base;
     z-index: 10;
+    box-sizing: border-box;
+    overflow-y: scroll;
 
-    .language {
+    .selected-value {
       position: relative;
       color: $black-base;
       font-size: 14px;
       line-height: 16px;
-      font-weight: 700;
+      font-weight: 500;
       padding: 8px 41px 8px 16px;
 
       &:hover {
@@ -119,9 +127,18 @@ export default class FormHeader extends Vue {
       }
     }
 
-    .language-hovered {
+    .value-hovered {
       background: $rose-light;
     }
   }
 }
+
+//.close-context-menu {
+//  position: absolute;
+//  top: 0;
+//  left: 0;
+//  width: 100%;
+//  height: 100%;
+//  z-index: 9;
+//}
 </style>

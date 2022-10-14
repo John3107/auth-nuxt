@@ -5,6 +5,8 @@
 </template>
 
 <style lang="scss">
+@import '@/static/scss/colors.scss';
+
 html body {
   margin: 0;
 }
@@ -12,10 +14,18 @@ html body {
 .nuxt {
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  background: #292C2E;
+  width: 100%;
+  background: $black-base;
   font-family: 'Inter', sans-serif;
+  padding: 100px 0;
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: $grey-extra-dark;
+  }
 }
 </style>

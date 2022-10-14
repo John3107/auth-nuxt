@@ -4,13 +4,14 @@
     <main class="main">
       <input-base type="email" label="Email" @value="email = $event"/>
       <input-base type="password" label="Пароль" @value="password = $event"/>
-      <label>
-        <input type="checkbox" name="checkbox" value="css"/>
-        <span>Чужой компьютер</span>
-      </label>
+      <input-checkbox>
+        <template #title>
+          <span class="input-checkbox-title">Чужий комп'ютер</span>
+        </template>
+      </input-checkbox>
     </main>
     <footer class="footer">
-      <button class="button" type="submit">Вхід</button>
+      <button-base :title="'Вхід'" :type="'submit'"/>
       <nuxt-link to="/registration" class="link">Подати заявку на реєстрацію</nuxt-link>
       <nuxt-link to="" class="link">Забули пароль?</nuxt-link>
     </footer>
@@ -20,14 +21,18 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import InputBase from "~/components/input/InputBase.vue"
+import InputBase from "~/components/inputs/input-base.vue"
 import FormHeader from "~/components/header/form-header.vue"
+import InputCheckbox from "~/components/inputs/input-checkbox.vue"
+import ButtonBase from "~/components/buttons/button-base.vue"
 
 @Component({
   name: 'IndexPage',
   components: {
     InputBase,
-    FormHeader
+    FormHeader,
+    InputCheckbox,
+    ButtonBase
   }
 })
 export default class Auth extends Vue {
@@ -57,37 +62,9 @@ export default class Auth extends Vue {
     justify-content: space-between;
     gap: 8px;
 
-    label > input[type="checkbox"] {
-      display: none;
-    }
-
-    label > input[type="checkbox"] + *::before {
-      content: "";
-      display: inline-block;
-      vertical-align: bottom;
-      width: 1rem;
-      height: 1rem;
-      margin-right: 0.3rem;
-      border-radius: 10%;
-      border-style: solid;
-      border-width: 0.1rem;
-      border-color: $orange-base;
-      flex-shrink: 0;
-      cursor: pointer;
-    }
-
-    label > input[type="checkbox"]:checked + *::before {
-      content: "✔";
-      color: white;
-      text-align: center;
-      line-height: 16px;
-      background: $orange-base;
-      cursor: pointer;
-    }
-
-    label span {
+    .input-checkbox-title {
       font-size: 16px;
-      color: $black-base
+      color: $black-base;
     }
   }
 
