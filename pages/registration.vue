@@ -26,7 +26,9 @@
         </template>
       </input-checkbox>
       <button-base :title="'Реєстрація'" :type="'submit'" :isDisabled="true"/>
-      <button-base :title="'Вхід'" class="button-modify"/>
+      <NuxtLink to="/">
+        <button-base :title="'Вхід'" class="button-modify"/>
+      </NuxtLink>
     </footer>
   </form>
 </template>
@@ -37,8 +39,8 @@ import Component from 'vue-class-component'
 import FormHeader from "~/components/header/form-header.vue"
 import InputBase from "~/components/inputs/input-base.vue"
 import InputSelect from "~/components/inputs/input-select.vue"
-import InputCheckbox from "~/components/inputs/input-checkbox.vue";
-import ButtonBase from "~/components/buttons/button-base.vue";
+import InputCheckbox from "~/components/inputs/input-checkbox.vue"
+import ButtonBase from "~/components/buttons/button-base.vue"
 
 @Component({
   name: 'Registration',
@@ -48,46 +50,21 @@ import ButtonBase from "~/components/buttons/button-base.vue";
     InputSelect,
     InputCheckbox,
     ButtonBase
+  },
+  computed: {
+    registrationData() {
+      return {...this.$store.getters['store/getRegistrationData']}
+    },
+    documentationData() {
+      return this.$store.getters['store/getDocumentationList']
+    },
+    regionData() {
+      return this.$store.getters['store/getRegionList']
+    }
   }
 })
 export default class Registration extends Vue {
 
-  company = ''
-  email = ''
-  password = ''
-  confirmationPassword = ''
-  surname = ''
-  name = ''
-  fatherName = ''
-  phone = ''
-  documentationData = ['Юридична особа', 'Фізична особа', 'Індивідуальний підприємець']
-  registrationCode = ''
-  webSite = ''
-  regionData = [
-    'Вінницька',
-    'Волинська',
-    'Луганська',
-    'Дніпропетровська',
-    'Донецька',
-    'Житомирська',
-    'Закарпатська',
-    'Івано-Франківська',
-    'Київська',
-    'Кіровоградська',
-    'Львівська',
-    'Миколаївська',
-    'Одеська',
-    'Полтавська',
-    'Рівненська',
-    'Сумська',
-    'Тернопільська',
-    'Харківська',
-    'Херсонська',
-    'Хмельницька',
-    'Черкаська',
-    'Чернігівська',
-    'Чернівецька'
-  ]
 }
 </script>
 

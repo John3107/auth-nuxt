@@ -81,7 +81,7 @@ export default class InputBase extends Vue {
 
   .icon {
     position: absolute;
-    top: 38px;
+    top: 33px;
     right: 16px;
     color: $grey-extra-dark;
     cursor: pointer;

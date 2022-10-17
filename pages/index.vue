@@ -25,6 +25,7 @@ import InputBase from "~/components/inputs/input-base.vue"
 import FormHeader from "~/components/header/form-header.vue"
 import InputCheckbox from "~/components/inputs/input-checkbox.vue"
 import ButtonBase from "~/components/buttons/button-base.vue"
+import { mapMutations } from 'vuex'
 
 @Component({
   name: 'IndexPage',
@@ -33,11 +34,22 @@ import ButtonBase from "~/components/buttons/button-base.vue"
     FormHeader,
     InputCheckbox,
     ButtonBase
+  },
+  computed: {
+    authData(){
+      return {...this.$store.getters['store/getAuthData']}
+    }
+  },
+  methods: {
+    ...mapMutations({
+      putAuthData: 'store/setAuthData'
+    })
+
   }
 })
 export default class Auth extends Vue {
-  email = ''
-  password = ''
+  // email = ''
+  // password = ''
 }
 </script>
 
