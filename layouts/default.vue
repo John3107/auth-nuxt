@@ -9,13 +9,12 @@
 
 html body {
   margin: 0;
+  background: $black-base;
 }
 
 .nuxt {
   display: flex;
   justify-content: center;
-  width: 100%;
-  background: $black-base;
   font-family: 'Inter', sans-serif;
   padding: 100px 0;
 

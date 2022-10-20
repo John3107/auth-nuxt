@@ -1,10 +1,17 @@
 <template>
-  <form class="index">
+  <form class="index" @submit.prevent="onSubmit">
     <form-header :title="'Вхід'"/>
     <main class="main">
+      <small v-if="($v.email.$dirty && !$v.email.email)">Неправильний формат e-mail</small>
+      <small v-if="($v.email.$dirty && !$v.email.required)">Поле обов'язково</small>
       <input-base type="email" label="Email" @value="email = $event"/>
+      <small v-if="($v.password.$dirty && !$v.password.required)">Поле обов'язково</small>
+<!--      <small v-if="($v.password.$dirty && !$v.password.required)">Повинні бути великі та маленькі літери, і хоча б одна-->
+<!--        цифра</small>-->
+<!--      <small v-if="($v.password.$dirty && !$v.password.minLength)">Мінімальна довжина поля має становити-->
+<!--        {{ $v.password.$params.minLength.min }}</small>-->
       <input-base type="password" label="Пароль" @value="password = $event"/>
-      <input-checkbox>
+      <input-checkbox @value="isOtherPC = $event">
         <template #title>
           <span class="input-checkbox-title">Чужий комп'ютер</span>
         </template>
@@ -17,7 +24,8 @@
     </footer>
   </form>
 </template>
-
+//putAuthData({...authData, email: $event})
+//putAuthData({...authData, password: $event})
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
@@ -25,7 +33,8 @@ import InputBase from "~/components/inputs/input-base.vue"
 import FormHeader from "~/components/header/form-header.vue"
 import InputCheckbox from "~/components/inputs/input-checkbox.vue"
 import ButtonBase from "~/components/buttons/button-base.vue"
-import { mapMutations } from 'vuex'
+import {mapMutations} from 'vuex'
+import {required, email} from 'vuelidate/lib/validators'
 
 @Component({
   name: 'IndexPage',
@@ -35,8 +44,15 @@ import { mapMutations } from 'vuex'
     InputCheckbox,
     ButtonBase
   },
+  data() {
+    return {
+      email: '',
+      password: '',
+      isOtherPC: false
+    }
+  },
   computed: {
-    authData(){
+    authData() {
       return {...this.$store.getters['store/getAuthData']}
     }
   },
@@ -44,12 +60,20 @@ import { mapMutations } from 'vuex'
     ...mapMutations({
       putAuthData: 'store/setAuthData'
     })
-
+  },
+  validations: {
+    email: { required, email },
+    password: { required }
   }
 })
 export default class Auth extends Vue {
-  // email = ''
-  // password = ''
+
+  onSubmit() {
+    if (this.$v.$invalid) {
+      this.$v.$touch()
+    }
+    return
+  }
 }
 </script>
 
@@ -113,5 +137,9 @@ export default class Auth extends Vue {
       cursor: pointer;
     }
   }
+}
+
+small {
+  color: $red-base;
 }
 </style>

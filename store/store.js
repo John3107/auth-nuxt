@@ -49,23 +49,22 @@ export const getters = {
   getRegistrationData: state => state.registrationData,
   getAuthData: state => state.authData,
   getDocumentationList: state => state.documentationList,
-  getRegionList: state => state.regionList
+  getRegionList: state => state.regionList,
 }
 
 export const mutations = {
   setRegistrationData: (state, payload) => state.registrationData = payload,
-  setAuthData: (state, payload) => {
-    console.log(payload, 222)
-    state.authData = payload
-  },
-  setDocumentationList: (state, payload) => state.documentationList = payload,
-  setRegionList: (state, payload) => state.regionList = payload
+  setAuthData: (state, payload) => state.authData = payload,
 }
 
 export const actions = {
-  // async fetchCounter({ state }) {
-  //   const res = { data: 10 };
-  //   state.counter = res.data;
-  //   return res.data;
-  // }
+  async signUp(formData) {
+    // this.$axios.post('https://dev.api.b2b.logicpower.ua/user/account/sign/up', formData)
+    //   .then((res) => {
+    //     console.log(res, 1111)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err, 222)
+    //   })
+  }
 }

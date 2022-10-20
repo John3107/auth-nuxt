@@ -1,7 +1,7 @@
 <template>
   <div class="input-base">
     <label>{{ label }}<span v-if="!isntRequire" class="require"> *</span></label>
-    <input :type="currentType" v-model="inputData"/>
+    <input :type="currentType" v-model.trim="inputData"/>
     <div class="icon" v-if="type !== 'password'">
       <img v-if="inputData"
            :src="require('@/static/icons/clear.svg')"

@@ -1,6 +1,9 @@
 <template>
   <label>
-    <input type="checkbox" name="checkbox" value="css"/>
+    <input type="checkbox"
+           name="checkbox"
+           value="css"
+           @click="onSwitch"/>
     <slot name="title" class="title"></slot>
   </label>
 </template>
@@ -13,7 +16,12 @@ import Component from 'vue-class-component'
   name: 'InputCheckbox'
 })
 export default class InputCheckbox extends Vue {
+  inputValue = false
 
+  onSwitch(){
+    this.inputValue = !this.inputValue
+    this.$emit('value', this.inputValue)
+  }
 }
 
 </script>

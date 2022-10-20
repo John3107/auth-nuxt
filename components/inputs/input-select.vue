@@ -1,27 +1,26 @@
 <template>
-<!--  <div>-->
-    <div class="input-select">
-      <label>{{ label }}</label>
-      <div class="select"
-           :class="{'select-active': isShowContext}"
-           @click="isShowContext = !isShowContext">
-        <input v-model="selectedValue"/>
-        <img :src="require('static/icons/arrow-left.svg')"
-             alt=""
-             :class="!isShowContext && 'arrow-down'"/>
-      </div>
-      <div class="context-menu" v-if="isShowContext">
-        <div class="selected-value"
-             :class="{'value-hovered': item === selectedValue}"
-             :style="{borderRadius: item === data[data.length - 1] && '0 0 8px 8px'}"
-             v-for="item in data"
-             :key="item"
-             @click="onSelectValue(item)">{{ item }}
-        </div>
-      </div>
+    <div>
+  <div class="input-select">
+    <label>{{ label }}</label>
+    <div class="select"
+         :class="{'select-active': isShowContext}"
+         @click="isShowContext = !isShowContext">
+      <input v-model="selectedValue" id="input-select"/>
+      <img :src="require('static/icons/arrow-left.svg')"
+           alt=""
+           :class="!isShowContext && 'arrow-down'"/>
     </div>
-<!--    <div v-if="isShowContext" class="close-context-menu" @click="isShowContext = false"></div>-->
-<!--  </div>-->
+    <div class="context-menu" v-if="isShowContext">
+      <div class="selected-value"
+           :class="{'value-hovered': item === selectedValue}"
+           :style="{borderRadius: item === data[data.length - 1] && '0 0 8px 8px'}"
+           v-for="item in data"
+           :key="item"
+           @click="onSelectValue(item)">{{ item }}</div>
+    </div>
+  </div>
+      <div v-if="isShowContext" class="close-context-menu" @click="isShowContext = false"></div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -39,6 +38,7 @@ export default class InputSelect extends Vue {
 
   onSelectValue(item: string) {
     this.selectedValue = item
+    this.$emit('value', item)
     this.isShowContext = !this.isShowContext
   }
 }
@@ -133,12 +133,12 @@ export default class InputSelect extends Vue {
   }
 }
 
-//.close-context-menu {
-//  position: absolute;
-//  top: 0;
-//  left: 0;
-//  width: 100%;
-//  height: 100%;
-//  z-index: 9;
-//}
+.close-context-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  z-index: 9;
+}
 </style>

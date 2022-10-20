@@ -1,19 +1,19 @@
 <template>
-  <form class="registration">
+  <form class="registration" @submit.prevent="onSubmit">
     <form-header :title="'Реєстрація'"/>
     <main class="main">
-      <input-base type="text" label="Компанія" @value="company = $event"/>
-      <input-base type="email" label="Email" @value="email = $event"/>
-      <input-base type="password" label="Пароль" @value="password = $event"/>
-      <input-base type="password" label="Підтвердження пароля" @value="confirmationPassword = $event"/>
-      <input-base type="text" label="Прізвище" @value="surname = $event"/>
-      <input-base type="text" label="Ім'я" @value="name = $event"/>
-      <input-base type="text" label="По батькові" @value="fatherName = $event"/>
-      <input-base type="phone" label="Телефон" @value="phone = $event"/>
-      <input-select label="Виберіть тип платника" :data="documentationData"/>
-      <input-base type="text" label="ЄДРПОУ" @value="registrationCode = $event"/>
-      <input-base type="text" label="Веб-сайт" @value="webSite = $event" :isntRequire="true"/>
-      <input-select label="Область" :data="regionData"/>
+      <input-base type="text" label="Компанія" @value="form.company = $event"/>
+      <input-base type="email" label="Email" @value="form.email = $event"/>
+      <input-base type="password" label="Пароль" @value="form.password = $event"/>
+      <input-base type="password" label="Підтвердження пароля" @value="form.confirmationPassword = $event"/>
+      <input-base type="text" label="Прізвище" @value="form.surname = $event"/>
+      <input-base type="text" label="Ім'я" @value="form.name = $event"/>
+      <input-base type="text" label="По батькові" @value="form.fatherName = $event"/>
+      <input-base type="phone" label="Телефон" @value="form.phone = $event"/>
+      <input-select label="Виберіть тип платника" :data="documentationData" @value="form.document = $event"/>
+      <input-base type="text" label="ЄДРПОУ" @value="form.registrationCode = $event"/>
+      <input-base type="text" label="Веб-сайт" @value="form.webSite = $event" :isntRequire="true"/>
+      <input-select label="Область" :data="regionData" @value="form.region = $event"/>
     </main>
     <footer class="footer">
       <input-checkbox>
@@ -25,7 +25,7 @@
           </div>
         </template>
       </input-checkbox>
-      <button-base :title="'Реєстрація'" :type="'submit'" :isDisabled="true"/>
+      <button-base :title="'Реєстрація'" :type="'submit'"/>
       <NuxtLink to="/">
         <button-base :title="'Вхід'" class="button-modify"/>
       </NuxtLink>
@@ -41,6 +41,8 @@ import InputBase from "~/components/inputs/input-base.vue"
 import InputSelect from "~/components/inputs/input-select.vue"
 import InputCheckbox from "~/components/inputs/input-checkbox.vue"
 import ButtonBase from "~/components/buttons/button-base.vue"
+import {mapMutations, mapActions, mapGetters} from "vuex"
+import {required, email, minLength} from 'vuelidate/lib/validators'
 
 @Component({
   name: 'Registration',
@@ -51,20 +53,53 @@ import ButtonBase from "~/components/buttons/button-base.vue"
     InputCheckbox,
     ButtonBase
   },
-  computed: {
-    registrationData() {
-      return {...this.$store.getters['store/getRegistrationData']}
-    },
-    documentationData() {
-      return this.$store.getters['store/getDocumentationList']
-    },
-    regionData() {
-      return this.$store.getters['store/getRegionList']
+  data(){
+    return {
+      form: {
+        company: '',
+        email: '',
+        password: '',
+        confirmationPassword: '',
+        surname: '',
+        name: '',
+        fatherName: '',
+        phone: '',
+        registrationCode: '',
+        webSite: '',
+        document: '',
+        region: ''
+      }
     }
+  },
+  validations: {
+    email: { required, email },
+    password: { required }
+  },
+  computed: {
+    ...mapGetters({
+      registrationData: 'store/getRegistrationData',
+      documentationData: 'store/getDocumentationList',
+      regionData: 'store/getRegionList'
+    })
+  },
+  methods: {
+    ...mapMutations({
+      putRegistrationData: 'store/setRegistrationData'
+    }),
+    ...mapActions({
+      toSignUp: 'store/signUp'
+    })
   }
 })
 export default class Registration extends Vue {
 
+  onSubmit(e: any) {
+    if(this.$v.$invalid){
+      this.$v.$touch()
+      return
+    }
+    this.toSignUp(this.form)
+  }
 }
 </script>
 
@@ -128,3 +163,44 @@ export default class Registration extends Vue {
   }
 }
 </style>
+
+
+<!--<main class="main">-->
+<!--<input-base type="text"-->
+<!--            label="Компанія"-->
+<!--            @value="putRegistrationData({...registrationData, company: $event})"/>-->
+<!--<input-base type="email"-->
+<!--            label="Email"-->
+<!--            @value="putRegistrationData({...registrationData, email: $event})"/>-->
+<!--<input-base type="password"-->
+<!--            label="Пароль"-->
+<!--            @value="putRegistrationData({...registrationData, password: $event})"/>-->
+<!--<input-base type="password"-->
+<!--            label="Підтвердження пароля"-->
+<!--            @value="putRegistrationData({...registrationData, confirmationPassword: $event})"/>-->
+<!--<input-base type="text"-->
+<!--            label="Прізвище"-->
+<!--            @value="putRegistrationData({...registrationData, surname: $event})"/>-->
+<!--<input-base type="text"-->
+<!--            label="Ім'я"-->
+<!--            @value="putRegistrationData({...registrationData, name: $event})"/>-->
+<!--<input-base type="text"-->
+<!--            label="По батькові"-->
+<!--            @value="putRegistrationData({...registrationData, fatherName: $event})"/>-->
+<!--<input-base type="phone"-->
+<!--            label="Телефон"-->
+<!--            @value="putRegistrationData({...registrationData, phone: $event})"/>-->
+<!--<input-select label="Виберіть тип платника"-->
+<!--              :data="documentationData"-->
+<!--              @value="putRegistrationData({...registrationData, document: $event})"/>-->
+<!--<input-base type="text"-->
+<!--            label="ЄДРПОУ"-->
+<!--            @value="putRegistrationData({...registrationData, registrationCode: $event})"/>-->
+<!--<input-base type="text"-->
+<!--            label="Веб-сайт"-->
+<!--            @value="putRegistrationData({...registrationData, webSite: $event})"-->
+<!--            :isntRequire="true"/>-->
+<!--<input-select label="Область"-->
+<!--              :data="regionData"-->
+<!--              @value="putRegistrationData({...registrationData, region: $event})"/>-->
+<!--</main>-->
