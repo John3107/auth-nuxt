@@ -27,4 +27,8 @@ html body {
     background: $grey-extra-dark;
   }
 }
+
+small {
+  color: $red-base !important;
+}
 </style>

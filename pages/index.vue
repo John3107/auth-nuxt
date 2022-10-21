@@ -138,8 +138,4 @@ export default class Auth extends Vue {
     }
   }
 }
-
-small {
-  color: $red-base;
-}
 </style>

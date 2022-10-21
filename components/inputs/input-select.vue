@@ -1,26 +1,27 @@
 <template>
-    <div>
   <div class="input-select">
     <label>{{ label }}</label>
+    <small>{{ error }}</small>
     <div class="select"
          :class="{'select-active': isShowContext}"
          @click="isShowContext = !isShowContext">
-      <input v-model="selectedValue" id="input-select"/>
+      <input v-model="selectedValue"
+             @blur="onBlurHandler"
+             :readonly="label === 'Виберіть тип платника' && 'readonly'"/>
       <img :src="require('static/icons/arrow-left.svg')"
            alt=""
            :class="!isShowContext && 'arrow-down'"/>
     </div>
-    <div class="context-menu" v-if="isShowContext">
+    <div class="context-menu" v-if="isShowContext" :style="{top: error && '76px'}">
       <div class="selected-value"
            :class="{'value-hovered': item === selectedValue}"
            :style="{borderRadius: item === data[data.length - 1] && '0 0 8px 8px'}"
            v-for="item in data"
            :key="item"
-           @click="onSelectValue(item)">{{ item }}</div>
+           @click="onSelectValue(item)">{{ item }}
+      </div>
     </div>
   </div>
-      <div v-if="isShowContext" class="close-context-menu" @click="isShowContext = false"></div>
-    </div>
 </template>
 
 <script lang="ts">
@@ -29,7 +30,12 @@ import Component from 'vue-class-component'
 
 @Component({
   name: 'InputSelect',
-  props: ['label', 'data']
+  props: ['label', 'data', 'error'],
+  watch: {
+    selectedValue(data) {
+      this.$emit('value', data)
+    }
+  }
 })
 export default class InputSelect extends Vue {
 
@@ -38,8 +44,12 @@ export default class InputSelect extends Vue {
 
   onSelectValue(item: string) {
     this.selectedValue = item
-    this.$emit('value', item)
-    this.isShowContext = !this.isShowContext
+    this.isShowContext = false
+  }
+
+  onBlurHandler() {
+    this.$emit('on-blur')
+    setTimeout(() => this.isShowContext = false, 150)
   }
 }
 </script>
@@ -72,6 +82,7 @@ export default class InputSelect extends Vue {
     padding: 10px 10px 10px 16px;
     border-radius: 8px;
     margin-top: 4px;
+    cursor: pointer;
 
     input {
       color: $black-base;
@@ -82,6 +93,7 @@ export default class InputSelect extends Vue {
       width: 100%;
       border: none;
       outline: 0;
+      cursor: pointer;
     }
 
     .arrow-down {
@@ -131,14 +143,5 @@ export default class InputSelect extends Vue {
       background: $rose-light;
     }
   }
-}
-
-.close-context-menu {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 200%;
-  z-index: 9;
 }
 </style>

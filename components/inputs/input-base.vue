@@ -1,7 +1,12 @@
 <template>
   <div class="input-base">
     <label>{{ label }}<span v-if="!isntRequire" class="require"> *</span></label>
-    <input :type="currentType" v-model.trim="inputData"/>
+    <small>{{ error }}</small>
+    <input :type="currentType"
+           @blur="$emit('on-blur')"
+           :value="inputData"
+           @input="updateValue($event.target.value)"
+    />
     <div class="icon" v-if="type !== 'password'">
       <img v-if="inputData"
            :src="require('@/static/icons/clear.svg')"
@@ -26,7 +31,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
-  props: ['label', 'type', 'isntRequire'],
+  props: ['label', 'type', 'isntRequire', 'error'],
   watch: {
     inputData(data) {
       this.$emit('value', data)
@@ -43,6 +48,15 @@ export default class InputBase extends Vue {
     this.isShowPassword = !this.isShowPassword
     if (this.currentType === 'text') this.currentType = 'password'
     else this.currentType = 'text'
+  }
+
+  updateValue(event: string) {
+    if (this.$props.type !== 'number') this.inputData = event
+    else {
+      if (this.$props.label === 'ЄДРПОУ' && event.length <= 8) this.inputData = event
+      if (this.$props.label === 'ІПН' && event.length <= 10) this.inputData = event
+    }
+    this.$forceUpdate()
   }
 }
 </script>
@@ -79,9 +93,14 @@ export default class InputBase extends Vue {
     }
   }
 
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
   .icon {
     position: absolute;
-    top: 33px;
+    bottom: 12px;
     right: 16px;
     color: $grey-extra-dark;
     cursor: pointer;

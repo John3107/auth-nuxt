@@ -3,21 +3,21 @@ export const state = () => ({
     email: '',
     password: ''
   },
-  registrationData: {
-    company: '',
-    email: '',
-    password: '',
-    confirmationPassword: '',
-    surname: '',
-    name: '',
-    fatherName: '',
-    phone: '',
-    registrationCode: '',
-    webSite: '',
-    document: '',
-    region: ''
-  },
-  documentationList: ['Юридична особа', 'Фізична особа', 'Індивідуальний підприємець'],
+   registrationData: {
+  //   company: '',
+  //   email: '',
+  //   password: '',
+  //   confirmationPassword: '',
+  //   surname: '',
+  //   name: '',
+  //   fatherName: '',
+  //   phone: '',
+  //   registrationCode: '',
+  //   webSite: '',
+  //   document: '',
+  //   region: ''
+   },
+  taxStatusList: ['Юридична особа', 'Фізична особа', 'Індивідуальний підприємець'],
   regionList: [
     'Вінницька',
     'Волинська',
@@ -48,7 +48,7 @@ export const state = () => ({
 export const getters = {
   getRegistrationData: state => state.registrationData,
   getAuthData: state => state.authData,
-  getDocumentationList: state => state.documentationList,
+  getTaxStatusList: state => state.taxStatusList,
   getRegionList: state => state.regionList,
 }
 
@@ -59,6 +59,7 @@ export const mutations = {
 
 export const actions = {
   async signUp(formData) {
+    console.log(formData, 'formData')
     // this.$axios.post('https://dev.api.b2b.logicpower.ua/user/account/sign/up', formData)
     //   .then((res) => {
     //     console.log(res, 1111)

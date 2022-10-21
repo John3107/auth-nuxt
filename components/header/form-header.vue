@@ -1,5 +1,5 @@
 <template>
-<!--  <div>-->
+  <div>
     <header class="header">
       <h1 class="title">{{ title }}</h1>
       <div class="select"
@@ -20,8 +20,8 @@
         </div>
       </div>
     </header>
-<!--    <div v-if="isShowContext" class="close-context-menu" @click="isShowContext = false"></div>-->
-<!--  </div>-->
+    <div v-if="isShowContext" class="close-lang-menu" @click="isShowContext = false"></div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -39,6 +39,7 @@ export default class FormHeader extends Vue {
   selectedLanguage = 'УКР'
 
   onSelectLanguage(item: string) {
+    this.$emit('value', item)
     this.selectedLanguage = item
     this.isShowContext = !this.isShowContext
   }
@@ -123,5 +124,13 @@ export default class FormHeader extends Vue {
       background: $rose-light;
     }
   }
+}
+.close-lang-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 9;
 }
 </style>
