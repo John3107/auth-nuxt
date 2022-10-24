@@ -82,7 +82,7 @@ export default class InputBase extends Vue {
   }
 
   input {
-    padding: 12px 16px;
+    padding: 11.5px 16px;
     border-radius: 8px;
     border: 1px solid $grey-light;
     outline: 0;

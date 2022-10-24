@@ -1,6 +1,6 @@
 <template>
   <div class="input-select">
-    <label>{{ label }}</label>
+    <label>{{ label }}<span v-if="required" class="require"> *</span></label>
     <small>{{ error }}</small>
     <div class="select"
          :class="{'select-active': isShowContext}"
@@ -30,7 +30,7 @@ import Component from 'vue-class-component'
 
 @Component({
   name: 'InputSelect',
-  props: ['label', 'data', 'error'],
+  props: ['label', 'data', 'error', 'required'],
   watch: {
     selectedValue(data) {
       this.$emit('value', data)
@@ -63,12 +63,13 @@ export default class InputSelect extends Vue {
   justify-content: space-between;
   position: relative;
   box-sizing: border-box;
+  gap: 4px;
 
   label {
     font-size: 12px;
     color: $black-base;
 
-    &:after {
+    .require {
       content: " *";
       color: $red-base;
     }
@@ -81,7 +82,6 @@ export default class InputSelect extends Vue {
     border: $grey-base 1px solid;
     padding: 10px 10px 10px 16px;
     border-radius: 8px;
-    margin-top: 4px;
     cursor: pointer;
 
     input {

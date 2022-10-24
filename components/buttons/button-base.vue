@@ -34,6 +34,11 @@ export default class ButtonBase extends Vue {
   line-height: 20px;
   font-weight: 400;
   cursor: pointer;
+  max-width: 350px;
+
+  @media(max-width: 769px) {
+    max-width: 100%;
+  }
 
   &:disabled {
     background: #cdcfd0;

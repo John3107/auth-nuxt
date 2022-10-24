@@ -1,22 +1,4 @@
 export const state = () => ({
-  authData: {
-    email: '',
-    password: ''
-  },
-   registrationData: {
-  //   company: '',
-  //   email: '',
-  //   password: '',
-  //   confirmationPassword: '',
-  //   surname: '',
-  //   name: '',
-  //   fatherName: '',
-  //   phone: '',
-  //   registrationCode: '',
-  //   webSite: '',
-  //   document: '',
-  //   region: ''
-   },
   taxStatusList: ['Юридична особа', 'Фізична особа', 'Індивідуальний підприємець'],
   regionList: [
     'Вінницька',
@@ -46,26 +28,18 @@ export const state = () => ({
 })
 
 export const getters = {
-  getRegistrationData: state => state.registrationData,
-  getAuthData: state => state.authData,
   getTaxStatusList: state => state.taxStatusList,
-  getRegionList: state => state.regionList,
-}
-
-export const mutations = {
-  setRegistrationData: (state, payload) => state.registrationData = payload,
-  setAuthData: (state, payload) => state.authData = payload,
+  getRegionList: state => state.regionList
 }
 
 export const actions = {
-  async signUp(formData) {
-    console.log(formData, 'formData')
-    // this.$axios.post('https://dev.api.b2b.logicpower.ua/user/account/sign/up', formData)
-    //   .then((res) => {
-    //     console.log(res, 1111)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err, 222)
-    //   })
+  signUp(data) {
+    this.$axios.$post('https://dev.api.b2b.logicpower.ua/user/account/sign/up', data)
+      .then((res) => {
+        console.log(res, 1111)
+      })
+      .catch((err) => {
+        console.log(err, 2222)
+      })
   }
 }

@@ -10,6 +10,7 @@
 html body {
   margin: 0;
   background: $black-base;
+  padding: 0 12px;
 }
 
 .nuxt {

@@ -13,7 +13,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
-  name: 'InputCheckbox'
+  firstName: 'InputCheckbox'
 })
 export default class InputCheckbox extends Vue {
   inputValue = false
