@@ -1,3 +1,6 @@
+import {FormType, StateType} from "~/types/types";
+import axios, { AxiosResponse } from 'axios';
+
 export const state = () => ({
   taxStatusList: ['Юридична особа', 'Фізична особа', 'Індивідуальний підприємець'],
   regionList: [
@@ -28,17 +31,17 @@ export const state = () => ({
 })
 
 export const getters = {
-  getTaxStatusList: state => state.taxStatusList,
-  getRegionList: state => state.regionList
+  getTaxStatusList: (state: StateType) => state.taxStatusList,
+  getRegionList: (state: StateType) => state.regionList
 }
 
 export const actions = {
-  signUp(data) {
-    this.$axios.$post('https://dev.api.b2b.logicpower.ua/user/account/sign/up', data)
-      .then((res) => {
+  signUp({commit}: any, data: FormType) {
+    axios.post('https://dev.api.b2b.logicpower.ua/user/account/sign/up', data)
+      .then((res: AxiosResponse) => {
         console.log(res, 1111)
       })
-      .catch((err) => {
+      .catch((err: AxiosResponse) => {
         console.log(err, 2222)
       })
   }

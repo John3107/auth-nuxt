@@ -32,15 +32,15 @@ import Component from 'vue-class-component'
   name: 'InputSelect',
   props: ['label', 'data', 'error', 'required'],
   watch: {
-    selectedValue(data) {
+    selectedValue(data: string) {
       this.$emit('value', data)
     }
   }
 })
 export default class InputSelect extends Vue {
 
-  isShowContext = false
-  selectedValue = ''
+  isShowContext: boolean = false
+  selectedValue: string = ''
 
   onSelectValue(item: string) {
     this.selectedValue = item

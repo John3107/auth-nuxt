@@ -13,10 +13,10 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
-  firstName: 'InputCheckbox'
+  name: 'InputCheckbox'
 })
 export default class InputCheckbox extends Vue {
-  inputValue = false
+  inputValue: boolean = false
 
   onSwitch(){
     this.inputValue = !this.inputValue

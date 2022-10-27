@@ -11,12 +11,10 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
-  props: ['title', 'type', 'isDisabled'],
-  name: 'ButtonBase'
+  name: 'ButtonBase',
+  props: ['title', 'type', 'isDisabled']
 })
-export default class ButtonBase extends Vue {
-
-}
+export default class ButtonBase extends Vue {}
 </script>
 
 <style lang="scss">

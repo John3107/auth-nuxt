@@ -1,6 +1,6 @@
 <template>
   <form class="registration" @submit.prevent="onSubmit">
-    <form-header :title="'Реєстрація'" @value="language = $event"/>
+    <form-header :title="'Реєстрація'" @value="localeHandler($event)"/>
     <main class="main">
       <input-base type="text"
                   label="Компанія"
@@ -73,7 +73,7 @@
           <input-select label="Область"
                         :data="searchingRegion"
                         :error="regionErrors"
-                        @value="form.companyRegionId = $event"
+
                         @on-blur="$v.form.companyRegionId.$touch()"/>
         </div>
       </div>
@@ -99,19 +99,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import Component, {mixins} from 'vue-class-component'
 import FormHeader from "~/components/header/form-header.vue"
 import InputBase from "~/components/inputs/input-base.vue"
 import InputSelect from "~/components/inputs/input-select.vue"
 import InputCheckbox from "~/components/inputs/input-checkbox.vue"
 import ButtonBase from "~/components/buttons/button-base.vue"
 import {mapActions, mapGetters} from "vuex"
-import validationMixin from '~/mixins/validationMixin'
+import {ValidationMixin} from '~/mixins/validationMixin'
 
 @Component({
   name: 'Registration',
-  mixins: [validationMixin],
   components: {
     FormHeader,
     InputBase,
@@ -123,10 +121,7 @@ import validationMixin from '~/mixins/validationMixin'
     ...mapGetters({
       taxStatusData: 'store/getTaxStatusList',
       regionData: 'store/getRegionList'
-    }),
-    searchingRegion() {
-      return this.regionData.filter(el => el.toLowerCase().includes(this.form.companyRegionId.toLowerCase()))
-    },
+    })
   },
   methods: {
     ...mapActions({
@@ -134,7 +129,7 @@ import validationMixin from '~/mixins/validationMixin'
     })
   },
   watch: {
-    taxStatusValue(data) {
+    taxStatusValue(data: string) {
       if (data) {
         if (this.taxStatusValue === 'Юридична особа') {
           this.form.companyTaxStatus = 'legalEntity'
@@ -150,9 +145,8 @@ import validationMixin from '~/mixins/validationMixin'
     }
   }
 })
-export default class Registration extends Vue {
-
-  codeChecking(val) {
+export default class Registration extends mixins(ValidationMixin) {
+  codeChecking(val: string) {
     this.form.code = val
     if (this.taxStatusValue === 'Юридична особа') this.companyUsreou = val
     else this.ipn = val
@@ -160,6 +154,10 @@ export default class Registration extends Vue {
 
   onSubmit() {
     this.toSignUp(this.form)
+  }
+
+  get searchingRegion() {
+    return this.regionData.filter(el => el.toLowerCase().includes(this.form.companyRegionId.toLowerCase()))
   }
 }
 </script>

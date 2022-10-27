@@ -33,16 +33,16 @@ import Component from 'vue-class-component'
 @Component({
   props: ['label', 'type', 'isntRequire', 'error'],
   watch: {
-    inputData(data) {
+    inputData(data: string) {
       this.$emit('value', data)
     }
   }
 })
 
 export default class InputBase extends Vue {
-  inputData = this.$props.type === 'phone' ? '+380' : ''
-  isShowPassword = false
-  currentType = this.$props.type
+  inputData: string = this.$props.type === 'phone' ? '+380' : ''
+  isShowPassword: boolean = false
+  currentType: string = this.$props.type
 
   passwordSwitcher() {
     this.isShowPassword = !this.isShowPassword

@@ -33,10 +33,9 @@ import Component from 'vue-class-component'
   props: ['title'],
 })
 export default class FormHeader extends Vue {
-
-  isShowContext = false
-  languages = ['РУС', 'УКР']
-  selectedLanguage = 'УКР'
+  isShowContext: boolean = false
+  languages: string[] = ['РУС', 'УКР']
+  selectedLanguage: string = 'УКР'
 
   onSelectLanguage(item: string) {
     this.$emit('value', item)

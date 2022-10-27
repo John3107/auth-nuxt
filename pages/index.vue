@@ -31,17 +31,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import Component, {mixins} from 'vue-class-component'
 import InputBase from "~/components/inputs/input-base.vue"
 import FormHeader from "~/components/header/form-header.vue"
 import InputCheckbox from "~/components/inputs/input-checkbox.vue"
 import ButtonBase from "~/components/buttons/button-base.vue"
-import validationMixin from '~/mixins/validationMixin'
+import {ValidationMixin} from '~/mixins/validationMixin'
 
 @Component({
   name: 'IndexPage',
-  mixins: [validationMixin],
   components: {
     InputBase,
     FormHeader,
@@ -49,8 +47,7 @@ import validationMixin from '~/mixins/validationMixin'
     ButtonBase
   }
 })
-export default class Auth extends Vue {
-
+export default class Auth extends mixins(ValidationMixin) {
   onSubmit() {
     if (this.$v.$invalid) {
       this.$v.$touch()
@@ -81,6 +78,7 @@ export default class Auth extends Vue {
     justify-content: space-between;
     gap: 8px;
     padding: 0 1px;
+
     .input-checkbox-title {
       font-size: 16px;
       color: $black-base;

@@ -7,6 +7,20 @@
 <style lang="scss">
 @import '@/static/scss/colors.scss';
 
+html{
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: $grey-extra-dark;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #E3E5E6;
+  }
+}
 html body {
   margin: 0;
   background: $black-base;
