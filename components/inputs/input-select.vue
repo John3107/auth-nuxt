@@ -5,20 +5,20 @@
     <div class="select"
          :class="{'select-active': isShowContext}"
          @click="isShowContext = !isShowContext">
-      <input v-model="selectedValue"
+      <input :value="initialData.name[language]"
              @blur="onBlurHandler"
-             :readonly="label === 'Виберіть тип платника' && 'readonly'"/>
+             readonly/>
       <img :src="require('static/icons/arrow-left.svg')"
            alt=""
            :class="!isShowContext && 'arrow-down'"/>
     </div>
     <div class="context-menu" v-if="isShowContext" :style="{top: error && '76px'}">
       <div class="selected-value"
-           :class="{'value-hovered': item === selectedValue}"
+           :class="{'value-hovered': item.name[language] === initialData.name[language]}"
            :style="{borderRadius: item === data[data.length - 1] && '0 0 8px 8px'}"
            v-for="item in data"
-           :key="item"
-           @click="onSelectValue(item)">{{ item }}
+           :key="item.id"
+           @click="onSelectValue(item)">{{ item.name[language] }}
       </div>
     </div>
   </div>
@@ -27,23 +27,17 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import {CompanyRegionType} from "~/types/types";
 
 @Component({
   name: 'InputSelect',
-  props: ['label', 'data', 'error', 'required'],
-  watch: {
-    selectedValue(data: string) {
-      this.$emit('value', data)
-    }
-  }
+  props: ['label', 'data', 'error', 'required', 'initialData', 'language']
 })
 export default class InputSelect extends Vue {
-
   isShowContext: boolean = false
-  selectedValue: string = ''
 
-  onSelectValue(item: string) {
-    this.selectedValue = item
+  onSelectValue(item: CompanyRegionType) {
+    this.$emit('value', item)
     this.isShowContext = false
   }
 

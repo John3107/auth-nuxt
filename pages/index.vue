@@ -3,19 +3,13 @@
     <form-header :title="'Вхід'"/>
     <main class="main">
       <input-base
-        type="email"
+        type="text"
         label="Email"
-        :error="emailErrors"
-        @value="form.email = $event"
-        @on-blur="$v.form.email.$touch()"
-      />
+        @value="form.email = $event"/>
       <input-base
         type="password"
         label="Пароль"
-        :error="passwordErrors"
-        @value="form.password = $event"
-        @on-blur="$v.form.password.$touch()"
-      />
+        @value="form.password = $event"/>
       <input-checkbox @value="isOtherPC = $event">
         <template #title>
           <span class="input-checkbox-title">Чужий комп'ютер</span>
@@ -37,6 +31,7 @@ import FormHeader from "~/components/header/form-header.vue"
 import InputCheckbox from "~/components/inputs/input-checkbox.vue"
 import ButtonBase from "~/components/buttons/button-base.vue"
 import {ValidationMixin} from '~/mixins/validationMixin'
+import {mapActions} from "vuex";
 
 @Component({
   name: 'IndexPage',
@@ -45,14 +40,16 @@ import {ValidationMixin} from '~/mixins/validationMixin'
     FormHeader,
     InputCheckbox,
     ButtonBase
+  },
+  methods: {
+    ...mapActions({
+      toSignIn: 'store/signIn'
+    })
   }
 })
 export default class Auth extends mixins(ValidationMixin) {
   onSubmit() {
-    if (this.$v.$invalid) {
-      this.$v.$touch()
-    }
-    return
+   this.toSignIn({emailOrPhone: this.form.email, password: this.form.password, isRapidExpiration: this.isOtherPC})
   }
 }
 </script>

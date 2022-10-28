@@ -1,9 +1,16 @@
 export type StateType = {
-  taxStatusList: string[]
-  regionList: string[]
+  taxStatusList: CurrentRegionType[]
+  regionList: CurrentRegionType[]
+  currentRegion: CurrentRegionType
+  currentTaxStatus: CurrentRegionType
 }
 
-export type FormType = {
+export type CurrentRegionType = {
+  id: string
+  name: { ru: string, uk: string }
+}
+
+export type RegistrationFormType = {
   email: string
   phone: string
   password: string
@@ -13,10 +20,15 @@ export type FormType = {
   locale: string
   companyName: string
   companyTaxStatus: string
- // code: string
+  companyUsreou: string
+  companyItn: string
   companyUrl: string
   companyRegionId: string
-  companyItn: string
+}
+
+export type CompanyRegionType = {
+  id: string
+  name: string
 }
 
 export type ValidationType = {

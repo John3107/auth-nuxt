@@ -31,6 +31,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
+  name: 'InputBase',
   props: ['label', 'type', 'isntRequire', 'error'],
   watch: {
     inputData(data: string) {

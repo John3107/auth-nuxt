@@ -49,20 +49,22 @@
           <input-select label="Виберіть тип платника"
                         :data="taxStatusData"
                         :error="taxStatusErrors"
-                        @value="taxStatusValue = $event"
+                        :initialData="currentTaxStatus"
+                        @value="putCurrentTaxStatus($event)"
+                        :language="form.locale"
                         :required="true"
                         @on-blur="$v.form.companyTaxStatus.$touch()"/>
-          <input-base v-show="taxStatusValue === 'Юридична особа'"
+          <input-base v-show="currentTaxStatus.name.uk === 'Юридична особа'"
                       type="number"
                       label="ЄДРПОУ"
                       :error="companyUsreouErrors"
-                      @value="codeChecking"
+                      @value="form.companyUsreou = $event"
                       @on-blur="$v.companyUsreou.$touch()"/>
-          <input-base v-show="taxStatusValue && taxStatusValue !== 'Юридична особа'"
+          <input-base v-show="currentTaxStatus.name.uk && currentTaxStatus.name.uk !== 'Юридична особа'"
                       type="number"
                       label="ІПН"
                       :error="ipnErrors"
-                      @value="codeChecking"
+                      @value="form.companyItn = $event"
                       @on-blur="$v.ipn.$touch()"/>
           <input-base type="text"
                       label="Веб-сайт"
@@ -71,10 +73,11 @@
                       :isntRequire="true"
                       @on-blur="$v.form.companyUrl.$touch()"/>
           <input-select label="Область"
-                        :data="searchingRegion"
-                        :error="regionErrors"
-
-                        @on-blur="$v.form.companyRegionId.$touch()"/>
+                        v-if="currentRegion.name.uk"
+                        :data="regionData"
+                        @value="putCurrentRegion($event)"
+                        :initialData="currentRegion"
+                        :language="form.locale"/>
         </div>
       </div>
     </main>
@@ -105,7 +108,7 @@ import InputBase from "~/components/inputs/input-base.vue"
 import InputSelect from "~/components/inputs/input-select.vue"
 import InputCheckbox from "~/components/inputs/input-checkbox.vue"
 import ButtonBase from "~/components/buttons/button-base.vue"
-import {mapActions, mapGetters} from "vuex"
+import {mapActions, mapGetters, mapMutations} from "vuex"
 import {ValidationMixin} from '~/mixins/validationMixin'
 
 @Component({
@@ -120,44 +123,43 @@ import {ValidationMixin} from '~/mixins/validationMixin'
   computed: {
     ...mapGetters({
       taxStatusData: 'store/getTaxStatusList',
-      regionData: 'store/getRegionList'
+      regionData: 'store/getRegionList',
+      currentRegion: 'store/getCurrentRegion',
+      currentTaxStatus: 'store/getCurrentTaxStatus'
     })
   },
   methods: {
     ...mapActions({
-      toSignUp: 'store/signUp'
+      toSignUp: 'store/signUp',
+      fetchRegions: 'store/regions',
+      fetchCurrentRegion: 'store/currentRegion'
+    }),
+    ...mapMutations({
+      putCurrentRegion: 'store/setCurrentRegion',
+      putCurrentTaxStatus: 'store/setCurrentTaxStatus'
     })
   },
   watch: {
-    taxStatusValue(data: string) {
+    currentTaxStatus(data: string) {
       if (data) {
-        if (this.taxStatusValue === 'Юридична особа') {
-          this.form.companyTaxStatus = 'legalEntity'
-          this.form.code = this.companyUsreou
-        } else if (this.taxStatusValue === 'Фізична особа') {
-          this.form.code = this.ipn
-          this.form.companyTaxStatus = 'individual'
-        } else {
-          this.form.code = this.ipn
-          this.form.companyTaxStatus = 'individualEntrepreneur'
-        }
+        if (data.name.uk === 'Юридична особа') this.form.companyTaxStatus = 'legalEntity'
+        else if (data.name.uk === 'Фізична особа') this.form.companyTaxStatus = 'individual'
+        else this.form.companyTaxStatus = 'individualEntrepreneur'
       }
+    },
+    currentRegion(data) {
+      this.form.companyRegionId = data.id
     }
   }
 })
 export default class Registration extends mixins(ValidationMixin) {
-  codeChecking(val: string) {
-    this.form.code = val
-    if (this.taxStatusValue === 'Юридична особа') this.companyUsreou = val
-    else this.ipn = val
+  mounted() {
+    this.fetchRegions()
+    this.fetchCurrentRegion()
   }
 
   onSubmit() {
     this.toSignUp(this.form)
-  }
-
-  get searchingRegion() {
-    return this.regionData.filter(el => el.toLowerCase().includes(this.form.companyRegionId.toLowerCase()))
   }
 }
 </script>
