@@ -73,7 +73,6 @@
                       :isntRequire="true"
                       @on-blur="$v.form.companyUrl.$touch()"/>
           <input-select label="Область"
-                        v-if="currentRegion.name.uk"
                         :data="regionData"
                         @value="putCurrentRegion($event)"
                         :initialData="currentRegion"
